@@ -1,10 +1,10 @@
 <template>
-  <nav class="px-6 py-4 shadow">
+  <nav class="bg-white fixed w-full z-20 px-6 py-4 shadow">
     <div class="lg:items-center lg:justify-between lg:flex">
       <div class="flex items-center justify-between">
-        <a href="#" class="mx-auto">
-          <img class="w-auto h-6 sm:h-7" src="https://merakiui.com/images/full-logo.svg" alt="" />
-        </a>
+        <router-link to="/" class="mx-auto">
+          <img class="w-auto h-14 sm:h-16" src="../assets/png/logo-MERAH-1.png" alt="" />
+        </router-link>
 
         <!-- Mobile menu button -->
         <div class="lg:hidden">

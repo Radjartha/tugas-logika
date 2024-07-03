@@ -7,20 +7,22 @@
         <div class="w-full lg:w-1/2">
           <div class="lg:max-w-lg">
             <h1 class="text-3xl font-semibold text-gray-800 lg:text-4xl">
-              Best place to choose <br />
-              your <span class="text-blue-500">clothes</span>
+              Diagnostik Terdepan<br />
+              memperbaiki masalah dengan akurasi <span class="text-[#b81818]">tinggi</span>
             </h1>
 
             <p class="mt-3 text-gray-600 dark:text-gray-400">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro beatae error laborum
-              ab amet sunt recusandae? Reiciendis natus perspiciatis optio.
+              Kami di Uwinfly mengerti pentingnya kinerja optimal dan keandalan motor listrik Anda.
+              Oleh karena itu, kami mempersembahkan Pusat Layanan Resmi Uwinfly, di mana kualitas
+              dan keahlian kami memastikan kendaraan Anda selalu dalam kondisi prima.
             </p>
-
-            <button
-              class="w-full px-5 py-2 mt-6 text-sm tracking-wider text-white uppercase transition-colors duration-300 transform bg-blue-600 rounded-lg lg:w-auto hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+            <router-link to="/diagnose">
+              <button
+                class="w-full px-5 py-2 mt-6 text-sm tracking-wider text-white uppercase transition-colors duration-300 transform bg-[#b81818] rounded-lg lg:w-auto hover:bg-[#ff2121] focus:outline-none focus:bg-[#ff2121]"
+              >
+                Diagnosa
+              </button></router-link
             >
-              Shop Now
-            </button>
           </div>
         </div>
 

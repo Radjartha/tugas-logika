@@ -1,62 +1,45 @@
 <template>
   <div class="bg-white p-4 rounded shadow-md">
     <h2 class="text-xl font-semibold mb-4">Formulir Diagnosa</h2>
-    <form @submit.prevent="diagnose">
-      <div class="mb-4" v-for="gejala in gejalas" :key="gejala.code">
+    <div v-if="!selectedK">
+      <label class="block text-gray-700 mb-2">Pilih Kategori Kerusakan:</label>
+      <select v-model="selectedK" class="block w-full border rounded px-3 py-2">
+        <option value="" disabled>Pilih Kategori</option>
+        <option v-for="(value, key) in decisionTree" :key="key" :value="key">{{ key }}</option>
+      </select>
+    </div>
+    <div v-else>
+      <div class="mb-4" v-for="(description, code) in gejalas" :key="code">
         <label class="block text-gray-700">
-          <input type="checkbox" v-model="selectedGejalas" :value="gejala.code" />
-          {{ gejala.description }}
+          <input type="checkbox" v-model="selectedGejalas" :value="code" />
+          {{ description }}
         </label>
       </div>
-      <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Diagnosa</button>
-    </form>
+      <button @click="diagnose" class="bg-blue-500 text-white py-2 px-4 rounded">Diagnosa</button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import decisionTree from '../decisionTree'
 
-const gejalas = ref([
-  { code: 'G1', description: 'Baterai atau aki cepat habis atau boros' },
-  { code: 'G2', description: 'Baterai berkurang sendiri pada saat kendaraan tidak digunakan' },
-  { code: 'G3', description: 'Usia baterai berkisar 10 Tahun atau lebih' },
-  { code: 'G4', description: 'Pengisian baterai dilakukan ketika baterai kurang dari 20%' },
-  { code: 'G5', description: 'Laju kendaraan terasa terhambat' },
-  { code: 'G6', description: 'Dinamo berkarat' },
-  { code: 'G7', description: 'Kendaraan berbunyi tidak seperti biasanya' },
-  {
-    code: 'G8',
-    description: 'Kendaraan belum dilakukan service/perawatan selama 3 bulan terakhir'
-  },
-  { code: 'G9', description: 'Lampu utama kendaraan mati' },
-  { code: 'G10', description: 'Lampu speedometer kendaraan mati' },
-  { code: 'G11', description: 'Lampu pada stoplamp mati' }
-])
-
+const selectedK = ref('')
 const selectedGejalas = ref([])
 const emit = defineEmits(['diagnosis'])
 
+const gejalas = computed(() => {
+  return selectedK.value ? decisionTree[selectedK.value].gejalas : {}
+})
+
 function diagnose() {
-  const rules = [
-    { conditions: ['G1'], solutions: ['K1'] },
-    { conditions: ['G2'], solutions: ['K1'] },
-    { conditions: ['G3'], solutions: ['K1'] },
-    { conditions: ['G4'], solutions: ['K1'] },
-    { conditions: ['G5'], solutions: ['K1'] },
-    { conditions: ['G6'], solutions: ['K2'] },
-    { conditions: ['G7'], solutions: ['K2'] },
-    { conditions: ['G8'], solutions: ['K2'] },
-    { conditions: ['G9'], solutions: ['K3'] },
-    { conditions: ['G10'], solutions: ['K3'] },
-    { conditions: ['G11'], solutions: ['K3'] }
-  ]
+  const solutions = []
+  const selectedSolutions = decisionTree[selectedK.value].solutions
 
-  const matchedRules = rules.filter((rule) =>
-    rule.conditions.every((condition) => selectedGejalas.value.includes(condition))
-  )
+  selectedGejalas.value.forEach((gejala) => {
+    solutions.push(...selectedSolutions[gejala])
+  })
 
-  const solutions = matchedRules.flatMap((rule) => rule.solutions)
-  const uniqueSolutions = [...new Set(solutions)]
-  emit('diagnosis', uniqueSolutions)
+  emit('diagnosis', [...new Set(solutions)])
 }
 </script>
